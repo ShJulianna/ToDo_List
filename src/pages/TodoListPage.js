@@ -1,12 +1,32 @@
+import { useState } from 'react';
 import Stack from '@mui/material/Stack';
-import {TextField, Button, Todo} from '../components'
+import {TextField, Button, Todo} from '../components';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTodos } from '../redux/todoSelector';
+import {addTodo, deleteTodo} from '../redux/todoActions'
 
 
 export const TodoListPage = () => {
 
-    const handleChange = () => {}
-    const handleClick = () => {}
+    const [todoText, setTodoText] = useState('');
+    const todos = useSelector(getTodos);
+    const dispatch = useDispatch();
+    console.log(todos);
 
+
+    const handleChange = ({target : {value}}) => {
+        setTodoText(value)}
+    
+    
+    const addTodoHandler = () => {
+        dispatch(addTodo(todoText));
+        setTodoText('');
+    }
+    const onTodoClick = () => {
+    }
+    const onTodoDelete = (id) => {
+        dispatch(deleteTodo(id))
+    }
 
 
     return (<>
@@ -17,12 +37,20 @@ export const TodoListPage = () => {
                 id='todo_text-input'
                 hintText="Some todo list"
                 fieldName='ToDo'
-                value=''
+                value={todoText}
             />
-            <Button type='add' text='add'/>
+            <Button type='add' text='add' handleClick={addTodoHandler}/>
         </Stack>
-        <Stack spacing={5} alignItems="center" justifyContent="center" marginTop={10}>
-           <Todo/>
+        <Stack spacing={2} alignItems="center" justifyContent="center" marginTop={10}>
+           {todos.map((todoData) => 
+                <Todo 
+                    {...todoData} 
+                    key={todoData.id}
+                    handleClick={onTodoClick}
+                    handleDelete={onTodoDelete}
+                    />)
+           }
+           
         </Stack>
     </>)
 }
