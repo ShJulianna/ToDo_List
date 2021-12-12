@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Stack from '@mui/material/Stack';
 import {TextField, Button, Todo} from '../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTodos } from '../redux/todoSelector';
-import {addTodo, deleteTodo} from '../redux/todoActions'
+import {addTodo, deleteTodo, switchTodoState} from '../redux/todoActions'
 
 
 export const TodoListPage = () => {
@@ -11,7 +11,7 @@ export const TodoListPage = () => {
     const [todoText, setTodoText] = useState('');
     const todos = useSelector(getTodos);
     const dispatch = useDispatch();
-    console.log(todos);
+    
 
 
     const handleChange = ({target : {value}}) => {
@@ -22,11 +22,13 @@ export const TodoListPage = () => {
         dispatch(addTodo(todoText));
         setTodoText('');
     }
-    const onTodoClick = () => {
-    }
-    const onTodoDelete = (id) => {
+    const onTodoClick = useCallback((id) => {
+        dispatch(switchTodoState(id))
+    }, [dispatch, switchTodoState])
+    
+    const onTodoDelete = useCallback((id) => {
         dispatch(deleteTodo(id))
-    }
+    },[dispatch,deleteTodo])
 
 
     return (<>

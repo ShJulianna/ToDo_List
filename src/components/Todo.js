@@ -1,4 +1,5 @@
 import Chip from '@mui/material/Chip';
+import {memo} from 'react';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CircleIcon from '@mui/icons-material/Circle';
 // import DoneAllIcon from '@mui/icons-material/DoneAll';
@@ -12,7 +13,10 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 
 
-export const Todo = ({text, done, handleClick, handleDelete, id}) => {
+export const Todo = memo(({text, done, handleClick, handleDelete, id}) => {
+    
+    console.log('render')
+    
     return <Chip 
         clickable
         color={'primary'}
@@ -20,7 +24,7 @@ export const Todo = ({text, done, handleClick, handleDelete, id}) => {
         icon={done ? <CheckCircleIcon/> : <CircleIcon/>}
         deleteIcon={<DeleteForeverIcon/>}
         label={text}
-        onClick={() => {}}
+        onClick={() => {handleClick(id)}}
         onDelete={() => {handleDelete(id)}}
         />
-}
+});

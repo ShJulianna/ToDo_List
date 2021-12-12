@@ -16,3 +16,10 @@ export const deleteTodo = (id) => ({
         toDeleteId: id
     }
 })
+
+export const switchTodoState = (id) => ({
+    type: todoActionTypes.SWITCH_TODO,
+    payload: {
+        toSwitchId: id
+    }
+})
