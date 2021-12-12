@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import Stack from '@mui/material/Stack';
-import {TextField, Button, Todo} from '../components';
+import {TextField, Button, Todo, Filter } from '../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTodos } from '../redux/todoSelector';
 import {addTodo, deleteTodo, switchTodoState} from '../redux/todoActions'
@@ -33,6 +33,14 @@ export const TodoListPage = () => {
 
     return (<>
         <h1>Todo List</h1>
+        <Stack
+            justifyContent='center'
+            alignItems='center'
+            marginBotton={15}>
+            <Filter/>
+        </Stack>
+
+
         <Stack spacing={5} direction="row" alignItems="center" justifyContent="center">
             <TextField 
                 handleChange={handleChange}
