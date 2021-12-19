@@ -1,4 +1,18 @@
-import { createStore, combineReducers } from "redux"; 
-import { todoReducer } from "./todoReducer";
+import { createStore, combineReducers, applyMiddleware } from "redux"; 
+import { todoReducer } from "./todo/todoReducer";
+import { userReducer } from "./user/userReducer";
+import thunk from 'redux-thunk';
+import { composeWithDevTools } from "redux-devtools-extension";
 
-export const store = createStore(todoReducer);
+
+const rootReducer = combineReducers({
+    todo: todoReducer,
+    user: userReducer
+});
+
+
+
+export const store = createStore(
+    rootReducer, 
+    composeWithDevTools(applyMiddleware(thunk))
+);
