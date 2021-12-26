@@ -1,23 +1,28 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import {TextField, Button, Todo, Filter } from '../components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFilteredTodos } from '../redux/todo/todoSelector';
-import {addTodo, deleteTodo, switchTodoState} from '../redux/todo/todoActions'
-import {ButtonAppBar} from '../components/ButtonAppBar'
+import {addTodo, deleteTodo, switchTodoState} from '../redux/todo/todoActions';
+import {ButtonAppBar} from '../components/ButtonAppBar';
+import {getUserId} from '../redux/user/userSelectors';
+import { initUser } from '../redux/user/userAction';
 
 export const TodoListPage = () => {
 
     const [todoText, setTodoText] = useState('');
     const todos = useSelector(getFilteredTodos);
     const dispatch = useDispatch();
-    
+    const userId = useSelector(getUserId);
 
+    useEffect(() => {
+        if(userId) {
+            dispatch(initUser(userId))
+        }
+    },[userId])
 
     const handleChange = ({target : {value}}) => {
         setTodoText(value)}
-    
-    
     const addTodoHandler = () => {
         dispatch(addTodo(todoText));
         setTodoText('');
@@ -25,7 +30,6 @@ export const TodoListPage = () => {
     const onTodoClick = useCallback((id) => {
         dispatch(switchTodoState(id))
     }, [dispatch, switchTodoState])
-    
     const onTodoDelete = useCallback((id) => {
         dispatch(deleteTodo(id))
     },[dispatch,deleteTodo])
@@ -40,8 +44,6 @@ export const TodoListPage = () => {
             marginBotton={15}>
             <Filter/>
         </Stack>
-
-
         <Stack spacing={5} direction="row" alignItems="center" justifyContent="center">
             <TextField 
                 handleChange={handleChange}
@@ -61,7 +63,6 @@ export const TodoListPage = () => {
                     handleDelete={onTodoDelete}
                     />)
            }
-           
         </Stack>
     </>)
 }
